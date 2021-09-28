@@ -4,7 +4,14 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "dev": "nodemon -r dotenv/config index.js"
+    "dev": "nodemon -r dotenv/config index.js",
+    "db:create": "sequelize-cli db:create",
+    "db:migrate": "sequelize-cli db:migrate",
+    "db:g:migration": "sequelize-cli migration:generate --name",
+    "db:reset": "sequelize-cli db:drop && sequelize-cli db:create && sequelize-cli db:migrate",
+    "db:g:seed": "sequelize-cli seed:generate --name",
+    "db:seeds": "sequelize-cli db:seed:all",
+    "db:reseed": "sequelize-cli db:drop && sequelize-cli db:create && sequelize-cli db:migrate && sequelize-cli db:seed:all"
   },
   "keywords": [],
   "author": "",
