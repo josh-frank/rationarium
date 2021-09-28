@@ -1,6 +1,7 @@
 const { Account, Transaction } = require( "../models" );
 
 const showTransactionOptions = {
+    raw: false,
     attributes: [ "id", "name", "date", "amount", "createdAt", "updatedAt" ],
     include: [
         { model: Account, as: "accountDebited" },
