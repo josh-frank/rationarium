@@ -1,5 +1,5 @@
 'use strict';
-const { Model } = require('sequelize');
+const { Model, QueryTypes } = require('sequelize');
 
 const reduceTransaction = (total, transaction) => total + parseFloat(transaction.amount);
 
@@ -15,8 +15,12 @@ module.exports = (sequelize, DataTypes) => {
     type: DataTypes.ENUM("asset", "income", "expense", "liability"),
     balance: {
       type: DataTypes.VIRTUAL,
-      get: () => { return "Test" },
-      // get: () => (this.credits?.reduce(reduceTransaction, 0) || 0) - (this.debits?.reduce(reduceTransaction, 0) || 0),
+      async get() {
+        const transactions = await sequelize.query( `SELECT * FROM "Transactions" WHERE "debitedAccountId" = ${ this.id } OR "creditedAccountId" = ${ this.id }`, { type: QueryTypes.SELECT } );
+        const result = transactions.reduce( ( balance, { amount, debitedAccountId, creditedAccountId } ) => debitedAccountId === this.id ? balance - parseFloat( amount ) : creditedAccountId === this.id ? balance + parseFloat( amount ) : balance, 0 );
+        console.log( `balance ${ this.id }: `, result );
+        return result;
+      },
     }
   }, {
     sequelize,
