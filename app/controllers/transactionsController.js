@@ -1,9 +1,10 @@
 const { Account, Transaction } = require( "../models" );
 
 const showTransactionOptions = {
+    attributes: [ "id", "name", "date", "amount", "createdAt", "updatedAt" ],
     include: [
-        { model: Account, as: "accountDebited" },
-        { model: Account, as: "accountCredited" },
+        { model: Account, as: "accountDebited", attributes: [ "id", "name", "type", "balance", "createdAt", "updatedAt" ] },
+        { model: Account, as: "accountCredited", attributes: [ "id", "name", "type", "balance", "createdAt", "updatedAt" ] },
     ]
 };
 
